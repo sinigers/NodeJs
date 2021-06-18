@@ -22,6 +22,9 @@ app.set('view engine', 'ejs');
 
 // middleware & static files
 app.use(express.static('public'));
+
+//takes all url encoded data and parse it to object
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use((req, res, next) => {
   res.locals.path = req.path;
@@ -88,6 +91,43 @@ app.get('/blogs', (req, res) => {
     });
 });
 
+app.post('/blogs', (req, res) =>{
+  const blog = new Blog(req.body)
+
+  //save to db
+  blog.save()
+    .then((result) =>{
+      //redirect to blogs
+      res.redirect('/blogs');
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+})
+
+// ':' varriable  not id-string
+app.get('/blogs/:id', (req, res) => {
+  const id = req.params.id;
+  Blog.findById(id)
+    .then(result => {
+      res.render('details', { blog: result, title: 'Blog Details' });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+app.delete('/blogs/:id', (req, res) => {
+  const id = req.params.id;
+  
+  Blog.findByIdAndDelete(id)
+    .then(result => {
+      res.json({ redirect: '/blogs' });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
 
 // 404 page
 app.use((req, res) => {
