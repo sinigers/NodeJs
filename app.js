@@ -1,4 +1,5 @@
   
+//tos start app in terminal - 'nodemon app'
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
@@ -9,7 +10,7 @@ const app = express();
 
 
 // connect to mongodb & listen for requests
-const dbURI = "mongodb+srv://user:pass@cluster0.cqyh9.mongodb.net/note-tuts?retryWrites=true&w=majority";
+const dbURI = "mongodb+srv://netnija:test12345@cluster0.cqyh9.mongodb.net/note-tuts?retryWrites=true&w=majority";
 
 
 
